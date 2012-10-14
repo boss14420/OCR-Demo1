@@ -3,5 +3,5 @@ OCR-Demo1
 
 BUILD:
 
-cmake CMakeLists.txt
+cmake CMakeLists.txt && 
 make
