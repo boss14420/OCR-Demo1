@@ -70,22 +70,22 @@ void StrokeScene::mouseReleaseEvent (QGraphicsSceneMouseEvent *mouseEvent)
     mousePressed = false;
     
     if (!currentPath.isEmpty()) {
-        for (auto stroke : currentStroke->collidingItems()) {
-            currentStroke->unite (*qgraphicsitem_cast<Stroke*>(stroke));
-            removeItem (stroke);
-            delete stroke;
-        }
-
-//        for (auto stroke : items()) {
-//            if ( (currentStroke->boundingRect().adjusted (-2,-2,2,2)
-//                            .intersects (stroke->boundingRect()) ) 
-//                    && (stroke != currentStroke) )
-//            {
-//                currentStroke->unite (*qgraphicsitem_cast<Stroke*>(stroke));
-//                removeItem (stroke);
-//                delete stroke;
-//            }
+//        for (auto stroke : currentStroke->collidingItems()) {
+//            currentStroke->unite (*qgraphicsitem_cast<Stroke*>(stroke));
+//            removeItem (stroke);
+//            delete stroke;
 //        }
+
+        for (auto stroke : items()) {
+            if ( (currentStroke->boundingRect().adjusted (-2,-2,2,2)
+                            .intersects (stroke->boundingRect()) ) 
+                    && (stroke != currentStroke) )
+            {
+                currentStroke->unite (*qgraphicsitem_cast<Stroke*>(stroke));
+                removeItem (stroke);
+                delete stroke;
+            }
+        }
 
         emit strokeChanged();
         
