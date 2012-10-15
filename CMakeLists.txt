@@ -11,6 +11,7 @@ cmake_minimum_required(VERSION 2.6.1)
 PROJECT(OCR-Demo1)
 
 find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED )
+find_package(OpenCV REQUIRED)
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
@@ -38,4 +39,4 @@ ADD_EXECUTABLE(ocr-demo ${SOURCES}
                         ${RESOURCES_RCC}
                         ${RC}
                 )
-TARGET_LINK_LIBRARIES(ocr-demo ${QT_LIBRARIES})
+TARGET_LINK_LIBRARIES(ocr-demo ${QT_LIBRARIES} ${OpenCV_LIBS})

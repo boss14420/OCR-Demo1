@@ -28,7 +28,7 @@
 CharactersBar::CharactersBar (StrokeScene *scene, QWidget *parent)
     : QWidget (parent), scene (scene)
 {
-    buffer = new QImage (scene->width(), 50, QImage::Format_ARGB32);
+    buffer = new QImage (scene->width(), 50, QImage::Format_Mono);
     setMinimumSize (buffer->size());
     setMaximumSize (buffer->size());
     resize (buffer->size());
@@ -46,7 +46,7 @@ void CharactersBar::updateChars()
     static const int CHAR_WIDTH = 20;
     static const int CHAR_HEIGHT = 28;
 
-    buffer->fill (Qt::white);
+    buffer->fill (Qt::color1);
 
 
     int x = CHAR_WIDTH / 2;
@@ -58,8 +58,8 @@ void CharactersBar::updateChars()
             auto rect1 = i1->boundingRect();
             auto rect2 = i2->boundingRect();
             
-            return (rect1.y() + .75 * rect2.height() < rect2.y()) 
-                    || ((rect1.y() < rect2.y() + .75 * rect1.height()) 
+            return (rect1.y() + rect1.height() < rect2.y()) 
+                    || ((rect1.y() < rect2.y() + rect2.height()) 
                         && (rect1.x() < rect2.x()));
         }
     } itemBefore;
@@ -68,10 +68,11 @@ void CharactersBar::updateChars()
     qSort (itemList.begin(), itemList.end(), itemBefore);
 
     QPainter painter (buffer);
+    painter.setPen (QPen (Qt::color0));
     for (auto item : itemList) {
         scene->render (&painter, QRectF (x, y, CHAR_WIDTH, CHAR_HEIGHT),
                        item->boundingRect().adjusted(-2,-2,2,2), 
-                       Qt::IgnoreAspectRatio);
+                       Qt::KeepAspectRatio);
 
         x += CHAR_WIDTH * 7 / 5;
     }

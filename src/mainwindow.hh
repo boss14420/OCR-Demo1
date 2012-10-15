@@ -24,9 +24,13 @@
 
 #include <QMainWindow>
 
+#include <opencv2/ml/ml.hpp>
+
 class StrokeScene;
 class QGraphicsView;
 class CharactersBar;
+class QPushButton;
+class QLabel;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -36,9 +40,27 @@ public:
     MainWindow ();
 
 private:
+    void initTrainingSet (cv::Mat_<float> &, cv::Mat_<float> &);
+    void train();
+    void predict(cv::Mat_<float> const &);
+    void learn();
+
+private slots:
+    void updateStroke();
+
+private:
+    static const int CHAR_WIDTH = 5;
+    static const int CHAR_HEIGHT = 7;
+    static const int INPUT_SIZE = CHAR_WIDTH * CHAR_HEIGHT;
+    static const int OUTPUT_SIZE = 26;
+
     StrokeScene *scene;
     QGraphicsView *view;
     CharactersBar *charactersBar;
+    QPushButton *clearButton;
+    QLabel *predictResult;
+
+    CvANN_MLP ann;
 };
 
 #endif // MAINWINDOW_HH
